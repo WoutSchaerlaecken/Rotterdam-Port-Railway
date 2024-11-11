@@ -1,3 +1,4 @@
+import networkx as nx
 from geopy.distance import geodesic
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -25,12 +26,6 @@ stations = [
     Station("Vonderlingenplaat", 51.888, 4.354),
     Station("Waalhaven", 51.888, 4.423)
 ]
-
-# Print all stations
-#for station in stations:
-    #print(station)
-
-    
 
 # Define a class for connections
 class Connection:
@@ -63,8 +58,8 @@ connections = [
     Connection(find_station_by_name("Botlek", stations), find_station_by_name("Vonderlingenplaat", stations)),
     Connection(find_station_by_name("Vonderlingenplaat", stations), find_station_by_name("Waalhaven", stations)),
     Connection(find_station_by_name("The Hague Central", stations), find_station_by_name("Naaldwijk", stations)),
-    Connection(find_station_by_name("Naaldwijk", stations), find_station_by_name("Maasvlakte", stations))
-
+    Connection(find_station_by_name("Naaldwijk", stations), find_station_by_name("Maasvlakte", stations)),
+    Connection(find_station_by_name("The Hague Central", stations), find_station_by_name("Central Station", stations))
 ]
 
 class MetroLine:
@@ -81,22 +76,15 @@ class MetroLine:
 # metro lines
 metro_lines = [
     MetroLine("Line 1", [connections[0], connections[1]]),
-    MetroLine("Line 2", [connections[2], connections[3], connections[4], connections[5],connections[6]]),
-    MetroLine("Line 3", [connections[7], connections[8]])
-
+    MetroLine("Line 2", [connections[2], connections[3], connections[4], connections[5], connections[6]]),
+    MetroLine("Line 3", [connections[7], connections[8]]),
+    MetroLine("Line 4", [connections[9]])
 ]
 
-# Print distances between all adjacent stations in each metro line
-for line in metro_lines:
-    print(f"Distances for {line.name}:")
-    for connection in line.connections:
-        print(f"{connection.station1.name} to {connection.station2.name}: {connection.distance:.2f} km")
-    print()
-
-
-# Print all metro lines and their total distances
-for line in metro_lines:
-    print(line)
+# Create a graph representation of the metro network
+G = nx.Graph()
+for connection in connections:
+    G.add_edge(connection.station1.name, connection.station2.name, weight=connection.distance)
 
 # Define a function to calculate travel time between stations
 def calculate_travel_time(distance, average_velocity, average_stopping_time, number_of_stops):
@@ -106,36 +94,26 @@ def calculate_travel_time(distance, average_velocity, average_stopping_time, num
 
 # Example parameters
 average_velocity = 55  # km/h
-average_stopping_time = 1/30  # minutes
+average_stopping_time = 1/60  # minutes
 
 # Create a DataFrame to store travel times
 travel_times = pd.DataFrame(index=[station.name for station in stations], columns=[station.name for station in stations])
 
 # Calculate travel times between each pair of stations
-for station1 in stations:  
+for station1 in stations:
     for station2 in stations:
-
         if station1 != station2:
-
-            connection = Connection(station1, station2)
-
-            number_of_stops = 1  # Assuming one stop at the destination station
-
-            travel_time = round((calculate_travel_time(connection.distance, average_velocity, average_stopping_time, number_of_stops))*60,2)
-
+            # Find the shortest path between the stations
+            path = nx.shortest_path(G, source=station1.name, target=station2.name, weight='weight')
+            number_of_stops = len(path) - 2 
+            distance = sum(G[path[i]][path[i+1]]['weight'] for i in range(len(path) - 1))
+            travel_time = round((calculate_travel_time(distance, average_velocity, average_stopping_time, number_of_stops)) * 60, 2)
             travel_times.at[station1.name, station2.name] = travel_time
-
         else:
-
             travel_times.at[station1.name, station2.name] = 0  # Travel time to the same station is 0
-
-# Prprint(travel_times)
-travel_times.at[station1.name, station2.name] = 0  # Travel time to the same station is 0
 
 # Print the travel times table
 print(travel_times)
-
-
 
 # Extract latitude and longitude from stations
 latitudes = [station.latitude for station in stations]
@@ -148,7 +126,7 @@ plt.scatter(longitudes, latitudes, marker='o', color='b')
 
 # Annotate each station
 for i, name in enumerate(names):
-    plt.annotate(name, (longitudes[i], latitudes[i]), textcoords="offset points", xytext=(0,10), ha='center')
+    plt.annotate(name, (longitudes[i], latitudes[i]), textcoords="offset points", xytext=(0, 10), ha='center')
 
 # Plot metro lines
 for line in metro_lines:
