@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 class Station:
     def __init__(self, name, latitude, longitude):
         self.name = name
@@ -24,3 +26,27 @@ stations = [
 # Print all stations
 #for station in stations:
     #print(station)
+
+    
+
+# Extract latitude and longitude from stations
+latitudes = [station.latitude for station in stations]
+longitudes = [station.longitude for station in stations]
+names = [station.name for station in stations]
+
+# Create a scatter plot
+plt.figure(figsize=(10, 8))
+plt.scatter(longitudes, latitudes, marker='o', color='b')
+
+# Annotate each station
+for i, name in enumerate(names):
+    plt.annotate(name, (longitudes[i], latitudes[i]), textcoords="offset points", xytext=(0,10), ha='center')
+
+# Set labels and title
+plt.xlabel('Longitude')
+plt.ylabel('Latitude')
+plt.title('Station Locations')
+
+# Show plot
+plt.grid(True)
+plt.show()
