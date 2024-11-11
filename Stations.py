@@ -78,13 +78,21 @@ class MetroLine:
     def __repr__(self):
         return f"MetroLine(name={self.name}, connections={len(self.connections)}, total_distance={self.total_distance():.2f} km)"
 
-# Example metro lines
+# metro lines
 metro_lines = [
     MetroLine("Line 1", [connections[0], connections[1]]),
     MetroLine("Line 2", [connections[2], connections[3], connections[4], connections[5],connections[6]]),
     MetroLine("Line 3", [connections[7], connections[8]])
 
 ]
+
+# Print distances between all adjacent stations in each metro line
+for line in metro_lines:
+    print(f"Distances for {line.name}:")
+    for connection in line.connections:
+        print(f"{connection.station1.name} to {connection.station2.name}: {connection.distance:.2f} km")
+    print()
+
 
 # Print all metro lines and their total distances
 for line in metro_lines:
@@ -97,22 +105,32 @@ def calculate_travel_time(distance, average_velocity, average_stopping_time, num
     return travel_time + total_stopping_time
 
 # Example parameters
-average_velocity = 60  # km/h
+average_velocity = 55  # km/h
 average_stopping_time = 1/30  # minutes
 
 # Create a DataFrame to store travel times
 travel_times = pd.DataFrame(index=[station.name for station in stations], columns=[station.name for station in stations])
 
 # Calculate travel times between each pair of stations
-for station1 in stations:
+for station1 in stations:  
     for station2 in stations:
+
         if station1 != station2:
+
             connection = Connection(station1, station2)
+
             number_of_stops = 1  # Assuming one stop at the destination station
-            travel_time = calculate_travel_time(connection.distance, average_velocity, average_stopping_time, number_of_stops)
+
+            travel_time = round((calculate_travel_time(connection.distance, average_velocity, average_stopping_time, number_of_stops))*60,2)
+
             travel_times.at[station1.name, station2.name] = travel_time
+
         else:
+
             travel_times.at[station1.name, station2.name] = 0  # Travel time to the same station is 0
+
+# Prprint(travel_times)
+travel_times.at[station1.name, station2.name] = 0  # Travel time to the same station is 0
 
 # Print the travel times table
 print(travel_times)
