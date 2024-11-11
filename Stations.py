@@ -1,4 +1,5 @@
 from geopy.distance import geodesic
+import pandas as pd
 import matplotlib.pyplot as plt
 
 # Define a class for stations
@@ -63,6 +64,7 @@ connections = [
     Connection(find_station_by_name("Vonderlingenplaat", stations), find_station_by_name("Waalhaven", stations)),
     Connection(find_station_by_name("The Hague Central", stations), find_station_by_name("Naaldwijk", stations)),
     Connection(find_station_by_name("Naaldwijk", stations), find_station_by_name("Maasvlakte", stations))
+
 ]
 
 class MetroLine:
@@ -81,11 +83,39 @@ metro_lines = [
     MetroLine("Line 1", [connections[0], connections[1]]),
     MetroLine("Line 2", [connections[2], connections[3], connections[4], connections[5],connections[6]]),
     MetroLine("Line 3", [connections[7], connections[8]])
+
 ]
 
 # Print all metro lines and their total distances
 for line in metro_lines:
     print(line)
+
+# Define a function to calculate travel time between stations
+def calculate_travel_time(distance, average_velocity, average_stopping_time, number_of_stops):
+    travel_time = distance / average_velocity
+    total_stopping_time = number_of_stops * average_stopping_time
+    return travel_time + total_stopping_time
+
+# Example parameters
+average_velocity = 60  # km/h
+average_stopping_time = 1/30  # minutes
+
+# Create a DataFrame to store travel times
+travel_times = pd.DataFrame(index=[station.name for station in stations], columns=[station.name for station in stations])
+
+# Calculate travel times between each pair of stations
+for station1 in stations:
+    for station2 in stations:
+        if station1 != station2:
+            connection = Connection(station1, station2)
+            number_of_stops = 1  # Assuming one stop at the destination station
+            travel_time = calculate_travel_time(connection.distance, average_velocity, average_stopping_time, number_of_stops)
+            travel_times.at[station1.name, station2.name] = travel_time
+        else:
+            travel_times.at[station1.name, station2.name] = 0  # Travel time to the same station is 0
+
+# Print the travel times table
+print(travel_times)
 
 
 
