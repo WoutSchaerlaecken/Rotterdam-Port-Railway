@@ -81,6 +81,9 @@ metro_lines = [
     MetroLine("Line 4", [connections[9]])
 ]
 
+# Print the total distance of each metro line
+for line in metro_lines:
+    print(f"{line.name}: {line.total_distance():.2f} km")
 # Create a graph representation of the metro network
 G = nx.Graph()
 for connection in connections:
@@ -93,7 +96,7 @@ def calculate_travel_time(distance, average_velocity, average_stopping_time, num
     return travel_time + total_stopping_time
 
 # Example parameters
-average_velocity = 55  # km/h
+average_velocity = 60  # km/h
 average_stopping_time = 1/60  # minutes
 
 # Create a DataFrame to store travel times
@@ -113,8 +116,27 @@ for station1 in stations:
             travel_times.at[station1.name, station2.name] = 0  # Travel time to the same station is 0
 
 # Print the travel times table
+print("Travel times (minutes):")
 print(travel_times)
 
+
+# Create a DataFrame to store distances
+distances = pd.DataFrame(index=[station.name for station in stations], columns=[station.name for station in stations])
+
+
+# Calculate distances between each pair of stations using the metro lines
+for station1 in stations:
+    for station2 in stations:
+        if station1 != station2:
+            # Find the shortest path between the stations using the metro lines
+            path = nx.shortest_path(G, source=station1.name, target=station2.name, weight='weight')
+            distance = sum(G[path[i]][path[i+1]]['weight'] for i in range(len(path) - 1))
+            distances.at[station1.name, station2.name] = round(distance, 2)
+        else:
+            distances.at[station1.name, station2.name] = 0  # Distance to the same station is 0
+# Print the distances table
+print("\nDistances (km):")
+print(distances)
 # Extract latitude and longitude from stations
 latitudes = [station.latitude for station in stations]
 longitudes = [station.longitude for station in stations]
