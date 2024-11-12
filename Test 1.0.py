@@ -63,37 +63,39 @@ connections = [
 ]
 
 class MetroLine:
-    def __init__(self, name, connections):
+    def __init__(self, name, connections, metros_per_hour):
         self.name = name
         self.connections = connections
+        self.metros_per_hour = metros_per_hour
 
     def total_distance(self):
         return sum(connection.distance for connection in self.connections)
 
     def __repr__(self):
-        return f"MetroLine(name={self.name}, connections={len(self.connections)}, total_distance={self.total_distance():.2f} km)"
+        return f"MetroLine(name={self.name}, connections={len(self.connections)}, total_distance={self.total_distance():.2f} km, metros_per_hour={self.metros_per_hour})"
 
 # metro lines
 metro_lines = [
-    MetroLine("Line 1", [connections[0], connections[1]]),
-    MetroLine("Line 2", [connections[2], connections[3], connections[4], connections[5], connections[6]]),
-    MetroLine("Line 3", [connections[7], connections[8]]),
-    MetroLine("Line 4", [connections[9]])
+    MetroLine("Line 1", [connections[0], connections[1]], 6),
+    MetroLine("Line 2", [connections[2], connections[3], connections[4], connections[5], connections[6]], 4),
+    MetroLine("Line 3", [connections[7], connections[8]], 3),
+    MetroLine("Line 4", [connections[9]], 2)
 ]
 
 # Print the total distance of each metro line
 for line in metro_lines:
     print(f"{line.name}: {line.total_distance():.2f} km")
+
 # Create a graph representation of the metro network
 G = nx.Graph()
 for connection in connections:
     G.add_edge(connection.station1.name, connection.station2.name, weight=connection.distance)
 
 # Define a function to calculate travel time between stations
-def calculate_travel_time(distance, average_velocity, average_stopping_time, number_of_stops):
+def calculate_travel_time(distance, average_velocity, average_stopping_time, number_of_stops, waiting_time):
     travel_time = distance / average_velocity
     total_stopping_time = number_of_stops * average_stopping_time
-    return travel_time + total_stopping_time
+    return travel_time + total_stopping_time + waiting_time
 
 # Example parameters
 average_velocity = 60  # km/h
@@ -110,19 +112,39 @@ for station1 in stations:
             path = nx.shortest_path(G, source=station1.name, target=station2.name, weight='weight')
             number_of_stops = len(path) - 2 
             distance = sum(G[path[i]][path[i+1]]['weight'] for i in range(len(path) - 1))
-            travel_time = round((calculate_travel_time(distance, average_velocity, average_stopping_time, number_of_stops)) * 60, 2)
+            
+            # Calculate waiting time when switching lines
+            waiting_time = 0
+            for i in range(len(path) - 1):
+                line1 = next((line for line in metro_lines if any(conn.station1.name == path[i] and conn.station2.name == path[i+1] for conn in line.connections)), None)
+                line2 = next((line for line in metro_lines if any(conn.station1.name == path[i+1] and conn.station2.name == path[i+2] for conn in line.connections)), None) if i < len(path) - 2 else None
+                if line1 and line2 and line1 != line2:
+                    waiting_time += 1 / line2.metros_per_hour
+            print(f"Waiting time from {station1.name} to {station2.name}: {waiting_time:.2f} minutes")
+            
+            travel_time = round((calculate_travel_time(distance, average_velocity, average_stopping_time, number_of_stops, waiting_time)) * 60, 2)
             travel_times.at[station1.name, station2.name] = travel_time
         else:
             travel_times.at[station1.name, station2.name] = 0  # Travel time to the same station is 0
 
 # Print the travel times table
-print("Travel times (minutes):")
-print(travel_times)
+#print("Travel times (minutes):")
+#print(travel_times)
 
+
+# Filter the stations for the specific ones
+selected_stations = ["Central Station", "Schiedam Centrum", "The Hague Central", "Naaldwijk"]
+port_stations = ["Maasvlakte", "Europort West", "Europort East", "Botlek", "Vonderlingenplaat", "Waalhaven"]
+
+# Create a DataFrame to store travel times for the selected stations to port stations
+filtered_travel_times = travel_times.loc[selected_stations, port_stations]
+
+# Print the filtered travel times table
+print("Filtered Travel times (minutes) from selected stations to port stations:")
+print(filtered_travel_times)
 
 # Create a DataFrame to store distances
 distances = pd.DataFrame(index=[station.name for station in stations], columns=[station.name for station in stations])
-
 
 # Calculate distances between each pair of stations using the metro lines
 for station1 in stations:
@@ -135,8 +157,9 @@ for station1 in stations:
         else:
             distances.at[station1.name, station2.name] = 0  # Distance to the same station is 0
 # Print the distances table
-print("\nDistances (km):")
-print(distances)
+#print("\nDistances (km):")
+#print(distances)
+
 # Extract latitude and longitude from stations
 latitudes = [station.latitude for station in stations]
 longitudes = [station.longitude for station in stations]

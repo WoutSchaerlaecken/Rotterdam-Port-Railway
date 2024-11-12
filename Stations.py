@@ -51,15 +51,15 @@ def find_station_by_name(name, stations):
 # Example connections using station names
 connections = [
     Connection(find_station_by_name("Central Station", stations), find_station_by_name("Schiedam Centrum", stations)),
-    Connection(find_station_by_name("Schiedam Centrum", stations), find_station_by_name("Waalhaven", stations)),
+    Connection(find_station_by_name("Schiedam Centrum", stations), find_station_by_name("Europort East", stations)),
     Connection(find_station_by_name("Maasvlakte", stations), find_station_by_name("Europort West", stations)),
     Connection(find_station_by_name("Europort West", stations), find_station_by_name("Europort East", stations)),
     Connection(find_station_by_name("Europort East", stations), find_station_by_name("Botlek", stations)),
     Connection(find_station_by_name("Botlek", stations), find_station_by_name("Vonderlingenplaat", stations)),
     Connection(find_station_by_name("Vonderlingenplaat", stations), find_station_by_name("Waalhaven", stations)),
     Connection(find_station_by_name("The Hague Central", stations), find_station_by_name("Naaldwijk", stations)),
-    Connection(find_station_by_name("Naaldwijk", stations), find_station_by_name("Maasvlakte", stations)),
-    Connection(find_station_by_name("The Hague Central", stations), find_station_by_name("Central Station", stations))
+    Connection(find_station_by_name("Naaldwijk", stations), find_station_by_name("Europort East", stations)),
+  
 ]
 
 class MetroLine:
@@ -78,7 +78,7 @@ metro_lines = [
     MetroLine("Line 1", [connections[0], connections[1]]),
     MetroLine("Line 2", [connections[2], connections[3], connections[4], connections[5], connections[6]]),
     MetroLine("Line 3", [connections[7], connections[8]]),
-    MetroLine("Line 4", [connections[9]])
+
 ]
 
 # Print the total distance of each metro line
@@ -117,7 +117,20 @@ for station1 in stations:
 
 # Print the travel times table
 print("Travel times (minutes):")
-print(travel_times)
+#print(travel_times)
+
+
+
+# Filter the stations for the specific ones
+selected_stations = ["Central Station", "Schiedam Centrum", "The Hague Central", "Naaldwijk"]
+port_stations = ["Maasvlakte", "Europort West", "Europort East", "Botlek", "Vonderlingenplaat", "Waalhaven"]
+
+# Create a DataFrame to store travel times for the selected stations to port stations
+filtered_travel_times = travel_times.loc[selected_stations, port_stations]
+
+# Print the filtered travel times table
+print("Filtered Travel times (minutes) from selected stations to port stations:")
+print(filtered_travel_times)
 
 
 # Create a DataFrame to store distances
@@ -136,7 +149,16 @@ for station1 in stations:
             distances.at[station1.name, station2.name] = 0  # Distance to the same station is 0
 # Print the distances table
 print("\nDistances (km):")
-print(distances)
+
+
+
+
+filtered_distances = distances.loc[selected_stations, port_stations]
+
+# Print the filtered travel times table
+
+print(filtered_distances)
+#print(distances)
 # Extract latitude and longitude from stations
 latitudes = [station.latitude for station in stations]
 longitudes = [station.longitude for station in stations]
