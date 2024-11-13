@@ -4,11 +4,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 from Inputs import stations, connections, metro_lines, average_velocity, average_stopping_time
-from functions import calculate_travel_time
+from functions import calculate_travel_time, G
 
-G = nx.Graph()
-for connection in connections:
-    G.add_edge(connection.station1.name, connection.station2.name, weight=connection.distance)
+
 
 """-------Print the distances between stations next to eachother on a line-------"""
 #for connection in connections:
@@ -102,4 +100,4 @@ plt.legend()
 
 # Show plot
 plt.grid(True)
-#plt.show()
+plt.show()
