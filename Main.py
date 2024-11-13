@@ -71,4 +71,4 @@ plt.legend()
 
 # Show plot
 plt.grid(True)
-#plt.show()
+plt.show()
