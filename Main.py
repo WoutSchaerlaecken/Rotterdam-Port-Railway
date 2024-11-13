@@ -3,8 +3,8 @@ from geopy.distance import geodesic
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from Inputs import stations, connections, metro_lines, average_velocity, average_stopping_time, start_stations, end_stations
-from functions import calculate_travel_time, G
+from Inputs import stations, connections, metro_lines, average_velocity, average_stopping_time, start_stations, end_stations, average_waiting_time
+from functions import calculate_travel_time_with_waiting, G, number_of_line_changes
 
 
 
@@ -26,7 +26,8 @@ for station1 in stations:
             number_of_stops = len(path) - 2 
             distance = sum(G[path[i]][path[i+1]]['weight'] for i in range(len(path) - 1))
             distances.at[station1.name, station2.name] = round(distance, 2)
-            travel_time = round((calculate_travel_time(distance, average_velocity, average_stopping_time, number_of_stops)) * 60, 2)
+            number_of_switches = number_of_line_changes(path)
+            travel_time = round((calculate_travel_time_with_waiting(distance, average_velocity, average_stopping_time, number_of_stops, number_of_switches, average_waiting_time)) * 60, 2)
             travel_times.at[station1.name, station2.name] = travel_time
         else:
             travel_times.at[station1.name, station2.name] = 0  # Travel time to the same station is 0
@@ -72,3 +73,5 @@ plt.legend()
 # Show plot
 plt.grid(True)
 plt.show()
+
+

@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 
 """-------Define the average velocity and stopping time for the metro-------"""
-average_velocity = 70  # km/h
+average_velocity = 60  # km/h
 average_stopping_time = 1/60  # minutes
 
 
@@ -58,7 +58,7 @@ def find_station_by_name(name, stations):
 # Create connections between stations
 connections = [
     Connection(find_station_by_name("Central Station", stations), find_station_by_name("Schiedam Centrum", stations)),
-    Connection(find_station_by_name("Schiedam Centrum", stations), find_station_by_name("Europort East", stations)),
+    Connection(find_station_by_name("Schiedam Centrum", stations), find_station_by_name("Botlek", stations)),
     Connection(find_station_by_name("Maasvlakte", stations), find_station_by_name("Europort West", stations)),
     Connection(find_station_by_name("Europort West", stations), find_station_by_name("Europort East", stations)),
     Connection(find_station_by_name("Europort East", stations), find_station_by_name("Botlek", stations)),
@@ -101,6 +101,17 @@ def calculate_travel_time(distance, average_velocity, average_stopping_time, num
     travel_time = distance / average_velocity
     total_stopping_time = number_of_stops * average_stopping_time
     return travel_time + total_stopping_time
+    # Define a function to calculate travel time with waiting time for line switches
+def calculate_travel_time_with_waiting(distance, average_velocity, average_stopping_time, number_of_stops, number_of_switches, average_waiting_time):
+    travel_time = distance / average_velocity
+    total_stopping_time = number_of_stops * average_stopping_time
+    total_waiting_time = number_of_switches * average_waiting_time
+    return travel_time + total_stopping_time + total_waiting_time
+
+# Define the average waiting time for switching lines
+average_waiting_time = 5 / 60  # 5 minutes
+
+# Calculate travel times between each pair of stations with waiting time for line switches
 
 
 
@@ -110,7 +121,21 @@ def calculate_travel_time(distance, average_velocity, average_stopping_time, num
     #print(f"{connection.station1.name} to {connection.station2.name}: {connection.distance:.2f} km")
 
 
-
+def number_of_line_changes(path):
+    number_of_switches = 0
+    for i in range(len(path) - 1):
+        current_station = path[i]
+        next_station = path[i + 1]
+        current_line = None
+        next_line = None
+        for line in metro_lines:
+            if any(connection.station1.name == current_station and connection.station2.name == next_station for connection in line.connections):
+                current_line = line
+            if any(connection.station1.name == next_station and connection.station2.name == path[i+1] for connection in line.connections):
+                next_line = line
+        if current_line != next_line:
+            number_of_switches += 1
+    return number_of_switches
 
 
 # Create a DataFrame to store travel times
@@ -122,12 +147,17 @@ for station1 in stations:
         if station1 != station2:
             # Find the shortest path between the stations
             path = nx.shortest_path(G, source=station1.name, target=station2.name, weight='weight')
-            number_of_stops = len(path) - 2 
+            number_of_stops = len(path) - 2
             distance = sum(G[path[i]][path[i+1]]['weight'] for i in range(len(path) - 1))
-            travel_time = round((calculate_travel_time(distance, average_velocity, average_stopping_time, number_of_stops)) * 60, 2)
+            
+            number_of_switches = number_of_line_changes(path)
+
+            travel_time = round((calculate_travel_time_with_waiting(distance, average_velocity, average_stopping_time, number_of_stops, number_of_switches, average_waiting_time)) * 60, 2)
             travel_times.at[station1.name, station2.name] = travel_time
         else:
             travel_times.at[station1.name, station2.name] = 0  # Travel time to the same station is 0
+
+
 
 # Print the travel times table
 #print("Travel times (minutes):")
@@ -139,12 +169,52 @@ for station1 in stations:
 selected_stations = ["Central Station", "Schiedam Centrum", "The Hague Central", "Naaldwijk"]
 port_stations = ["Maasvlakte", "Europort West", "Europort East", "Botlek", "Vonderlingenplaat", "Waalhaven"]
 
+
+
+
+
+
+
+# Create a DataFrame to store the number of line changes
+line_changes = pd.DataFrame(index=[station.name for station in stations], columns=[station.name for station in stations])
+
+# Calculate the number of line changes between each pair of stations
+for station1 in stations:
+    for station2 in stations:
+        if station1 != station2:
+            # Find the shortest path between the stations
+            path = nx.shortest_path(G, source=station1.name, target=station2.name, weight='weight')
+            
+            # Determine the line of the starting and ending stations
+            start_line = None
+            end_line = None
+            for line in metro_lines:
+                if any(connection.station1.name == path[0] and connection.station2.name == path[1] for connection in line.connections):
+                    start_line = line
+                if any(connection.station1.name == path[-2] and connection.station2.name == path[-1] for connection in line.connections):
+                    end_line = line
+            
+            # Check if the start and end stations are on different lines
+            if start_line != end_line:
+                line_changes.at[station1.name, station2.name] = 1
+            else:
+                line_changes.at[station1.name, station2.name] = 0
+        else:
+            line_changes.at[station1.name, station2.name] = 0  # No line changes to the same station
+
+# Filter the line changes for the specific stations
+filtered_line_changes = line_changes.loc[selected_stations, port_stations]
+
+# Print the filtered line changes table
+print("Filtered Line Changes from selected stations to port stations:")
+print(filtered_line_changes)
+
 # Create a DataFrame to store travel times for the selected stations to port stations
 filtered_travel_times = travel_times.loc[selected_stations, port_stations]
 
 # Print the filtered travel times table
 #print("Filtered Travel times (minutes) from selected stations to port stations:")
-#print(filtered_travel_times)
+print(filtered_travel_times)
 
 
 # Create a DataFrame to store distances
