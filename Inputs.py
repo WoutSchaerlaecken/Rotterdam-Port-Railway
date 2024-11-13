@@ -10,6 +10,12 @@ average_velocity = 70  # km/h
 average_stopping_time = 1/60  # minutes
 
 
+
+# Specify the start and end stations for the distance and travel time calculations
+start_stations = ["Central Station", "Schiedam Centrum", "The Hague Central", "Naaldwijk"]
+end_stations = ["Maasvlakte", "Europort West", "Europort East", "Botlek", "Vonderlingenplaat", "Waalhaven"]
+
+
 # Create stations with their names and coordinates
 stations = [
     Station("Central Station", 51.925, 4.468),

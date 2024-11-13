@@ -3,7 +3,7 @@ from geopy.distance import geodesic
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from Inputs import stations, connections, metro_lines, average_velocity, average_stopping_time
+from Inputs import stations, connections, metro_lines, average_velocity, average_stopping_time, start_stations, end_stations
 from functions import calculate_travel_time, G
 
 
@@ -29,18 +29,9 @@ for station1 in stations:
         else:
             travel_times.at[station1.name, station2.name] = 0  # Travel time to the same station is 0
 
-# Print the travel times table
-#print("Travel times (minutes):")
-#print(travel_times)
-
-
-
-# Filter the stations for the specific ones
-selected_stations = ["Central Station", "Schiedam Centrum", "The Hague Central", "Naaldwijk"]
-port_stations = ["Maasvlakte", "Europort West", "Europort East", "Botlek", "Vonderlingenplaat", "Waalhaven"]
-
 # Create a DataFrame to store travel times for the selected stations to port stations
-filtered_travel_times = travel_times.loc[selected_stations, port_stations]
+filtered_travel_times = travel_times.loc[start_stations, end_stations]
+
 
 # Print the filtered travel times table
 #print("Filtered Travel times (minutes) from selected stations to port stations:")
@@ -61,17 +52,12 @@ for station1 in stations:
             distances.at[station1.name, station2.name] = round(distance, 2)
         else:
             distances.at[station1.name, station2.name] = 0  # Distance to the same station is 0
-# Print the distances table
-#print("\nDistances (km):")
-
-
-
 
 filtered_distances = distances.loc[selected_stations, port_stations]
 
 # Print the filtered travel times table
 
-#print(filtered_distances)
+print(filtered_distances)
 #print(distances)
 # Extract latitude and longitude from stations
 latitudes = [station.latitude for station in stations]
@@ -100,4 +86,4 @@ plt.legend()
 
 # Show plot
 plt.grid(True)
-plt.show()
+#plt.show()
