@@ -33,7 +33,7 @@ stations = [
 # Create connections between stations
 connections = [
     Connection(find_station_by_name("Central Station", stations), find_station_by_name("Schiedam Centrum", stations)),
-    Connection(find_station_by_name("Schiedam Centrum", stations), find_station_by_name("Europort East", stations)),
+    Connection(find_station_by_name("Schiedam Centrum", stations), find_station_by_name("Botlek", stations)),
     Connection(find_station_by_name("Maasvlakte", stations), find_station_by_name("Europort West", stations)),
     Connection(find_station_by_name("Europort West", stations), find_station_by_name("Europort East", stations)),
     Connection(find_station_by_name("Europort East", stations), find_station_by_name("Botlek", stations)),

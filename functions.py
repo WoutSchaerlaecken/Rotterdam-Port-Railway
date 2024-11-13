@@ -4,24 +4,34 @@
 import networkx as nx
 from Inputs import connections, metro_lines, stations
 
-
+#Calculate the travel time between two stations
 def calculate_travel_time(distance, average_velocity, average_stopping_time, number_of_stops):
     travel_time = distance / average_velocity
     total_stopping_time = number_of_stops * average_stopping_time
     return travel_time + total_stopping_time
 
 
+def calculate_travel_time_with_waiting(distance, average_velocity, average_stopping_time, number_of_stops, number_of_switches, average_waiting_time):
+    travel_time = distance / average_velocity
+    total_stopping_time = number_of_stops * average_stopping_time
+    total_waiting_time = number_of_switches * average_waiting_time
+    return travel_time + total_stopping_time + total_waiting_time
+
+
+# Create a graph to represent the metro system
 G = nx.Graph()
 for connection in connections:
     G.add_edge(connection.station1.name, connection.station2.name, weight=connection.distance)
 
+
+# Find the station object by its name
 def find_station_by_name(name, stations):
     for station in stations:
         if station.name == name:
             return station
     raise ValueError(f"Station with name {name} not found")
 
-
+# Find the number of line changes between two stations
 def get_number_of_switches(station1_name, station2_name):
     if station1_name == station2_name:
         return 0  # No line changes to the same station
@@ -46,9 +56,6 @@ def get_number_of_switches(station1_name, station2_name):
         return 1
     else:
         return 0
+    
 
-def calculate_travel_time_with_waiting(distance, average_velocity, average_stopping_time, number_of_stops, number_of_switches, average_waiting_time):
-    travel_time = distance / average_velocity
-    total_stopping_time = number_of_stops * average_stopping_time
-    total_waiting_time = number_of_switches * average_waiting_time
-    return travel_time + total_stopping_time + total_waiting_time
+

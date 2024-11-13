@@ -6,12 +6,10 @@ import matplotlib.pyplot as plt
 from Inputs import stations, connections, metro_lines, average_velocity, average_stopping_time, start_stations, end_stations, average_waiting_time
 from functions import calculate_travel_time_with_waiting, G, get_number_of_switches
 
-
-
 """-------Print the distances between stations next to eachother on a line-------"""
+
 #for connection in connections:
     #print(f"{connection.station1.name} to {connection.station2.name}: {connection.distance:.2f} km")
-
 
 # Create DataFrames to store travel times and distances between stations
 travel_times = pd.DataFrame(index=[station.name for station in stations], columns=[station.name for station in stations])
@@ -36,8 +34,6 @@ for station1 in stations:
 # Create a DataFrame to store travel times for the selected stations to port stations
 filtered_travel_times = travel_times.loc[start_stations, end_stations]
 filtered_distances = distances.loc[start_stations, end_stations]
-
-
 
 #print("Filtered Travel times (minutes) from selected stations to port stations:")
 print(filtered_travel_times)
@@ -73,5 +69,3 @@ plt.legend()
 # Show plot
 plt.grid(True)
 plt.show()
-
-
