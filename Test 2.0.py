@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 """-------Define the average velocity and stopping time for the metro-------"""
 average_velocity = 60  # km/h
 average_stopping_time = 1/60  # minutes
+# Define the average waiting time for switching lines
+average_waiting_time = 0  # 5 minutes
 
 
 """-------Define the stations and connections in the metro network-------"""
@@ -58,7 +60,7 @@ def find_station_by_name(name, stations):
 # Create connections between stations
 connections = [
     Connection(find_station_by_name("Central Station", stations), find_station_by_name("Schiedam Centrum", stations)),
-    Connection(find_station_by_name("Schiedam Centrum", stations), find_station_by_name("Botlek", stations)),
+    Connection(find_station_by_name("Schiedam Centrum", stations), find_station_by_name("Europort East", stations)),
     Connection(find_station_by_name("Maasvlakte", stations), find_station_by_name("Europort West", stations)),
     Connection(find_station_by_name("Europort West", stations), find_station_by_name("Europort East", stations)),
     Connection(find_station_by_name("Europort East", stations), find_station_by_name("Botlek", stations)),
@@ -108,8 +110,7 @@ def calculate_travel_time_with_waiting(distance, average_velocity, average_stopp
     total_waiting_time = number_of_switches * average_waiting_time
     return travel_time + total_stopping_time + total_waiting_time
 
-# Define the average waiting time for switching lines
-average_waiting_time = 5 / 60  # 5 minutes
+
 
 # Calculate travel times between each pair of stations with waiting time for line switches
 
