@@ -171,7 +171,7 @@ filtered_distances = distances.loc[selected_stations, port_stations]
 
 # Print the filtered travel times table
 
-#print(filtered_distances)
+print(filtered_distances)
 #print(distances)
 # Extract latitude and longitude from stations
 latitudes = [station.latitude for station in stations]
@@ -200,4 +200,4 @@ plt.legend()
 
 # Show plot
 plt.grid(True)
-#plt.show()
+plt.show()
