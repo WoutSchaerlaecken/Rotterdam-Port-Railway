@@ -4,7 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 from Inputs import stations, connections, metro_lines, average_velocity, average_stopping_time, start_stations, end_stations, average_waiting_time
-from functions import calculate_travel_time_with_waiting, G, number_of_line_changes
+from functions import calculate_travel_time_with_waiting, G, get_number_of_switches
 
 
 
@@ -26,7 +26,7 @@ for station1 in stations:
             number_of_stops = len(path) - 2 
             distance = sum(G[path[i]][path[i+1]]['weight'] for i in range(len(path) - 1))
             distances.at[station1.name, station2.name] = round(distance, 2)
-            number_of_switches = number_of_line_changes(path)
+            number_of_switches = get_number_of_switches(station1.name, station2.name)
             travel_time = round((calculate_travel_time_with_waiting(distance, average_velocity, average_stopping_time, number_of_stops, number_of_switches, average_waiting_time)) * 60, 2)
             travel_times.at[station1.name, station2.name] = travel_time
         else:
