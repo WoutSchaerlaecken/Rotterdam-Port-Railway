@@ -51,15 +51,15 @@ def find_station_by_name(name, stations):
 # Example connections using station names
 connections = [
     Connection(find_station_by_name("Central Station", stations), find_station_by_name("Schiedam Centrum", stations)),
-    Connection(find_station_by_name("Schiedam Centrum", stations), find_station_by_name("Waalhaven", stations)),
+    Connection(find_station_by_name("Schiedam Centrum", stations), find_station_by_name("Europort East", stations)),
     Connection(find_station_by_name("Maasvlakte", stations), find_station_by_name("Europort West", stations)),
     Connection(find_station_by_name("Europort West", stations), find_station_by_name("Europort East", stations)),
     Connection(find_station_by_name("Europort East", stations), find_station_by_name("Botlek", stations)),
     Connection(find_station_by_name("Botlek", stations), find_station_by_name("Vonderlingenplaat", stations)),
     Connection(find_station_by_name("Vonderlingenplaat", stations), find_station_by_name("Waalhaven", stations)),
     Connection(find_station_by_name("The Hague Central", stations), find_station_by_name("Naaldwijk", stations)),
-    Connection(find_station_by_name("Naaldwijk", stations), find_station_by_name("Maasvlakte", stations)),
-    Connection(find_station_by_name("The Hague Central", stations), find_station_by_name("Central Station", stations))
+    Connection(find_station_by_name("Naaldwijk", stations), find_station_by_name("Europort East", stations)),
+  
 ]
 
 class MetroLine:
@@ -77,9 +77,9 @@ class MetroLine:
 # metro lines
 metro_lines = [
     MetroLine("Line 1", [connections[0], connections[1]], 6),
-    MetroLine("Line 2", [connections[2], connections[3], connections[4], connections[5], connections[6]], 4),
-    MetroLine("Line 3", [connections[7], connections[8]], 3),
-    MetroLine("Line 4", [connections[9]], 2)
+    MetroLine("Line 2", [connections[2], connections[3], connections[4], connections[5], connections[6]], 10),
+    MetroLine("Line 3", [connections[7], connections[8]], 3)
+
 ]
 
 # Print the total distance of each metro line
@@ -98,7 +98,7 @@ def calculate_travel_time(distance, average_velocity, average_stopping_time, num
     return travel_time + total_stopping_time + waiting_time
 
 # Example parameters
-average_velocity = 60  # km/h
+average_velocity = 70  # km/h
 average_stopping_time = 1/60  # minutes
 
 # Create a DataFrame to store travel times

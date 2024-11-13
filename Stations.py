@@ -3,6 +3,13 @@ from geopy.distance import geodesic
 import pandas as pd
 import matplotlib.pyplot as plt
 
+
+"""-------Define the average velocity and stopping time for the metro-------"""
+average_velocity = 70  # km/h
+average_stopping_time = 1/60  # minutes
+
+
+"""-------Define the stations and connections in the metro network-------"""
 # Define a class for stations
 class Station:
     def __init__(self, name, latitude, longitude):
@@ -48,7 +55,7 @@ def find_station_by_name(name, stations):
             return station
     raise ValueError(f"Station with name {name} not found")
 
-# Example connections using station names
+# Create connections between stations
 connections = [
     Connection(find_station_by_name("Central Station", stations), find_station_by_name("Schiedam Centrum", stations)),
     Connection(find_station_by_name("Schiedam Centrum", stations), find_station_by_name("Europort East", stations)),
@@ -73,7 +80,7 @@ class MetroLine:
     def __repr__(self):
         return f"MetroLine(name={self.name}, connections={len(self.connections)}, total_distance={self.total_distance():.2f} km)"
 
-# metro lines
+# Create metro lines
 metro_lines = [
     MetroLine("Line 1", [connections[0], connections[1]]),
     MetroLine("Line 2", [connections[2], connections[3], connections[4], connections[5], connections[6]]),
@@ -81,9 +88,9 @@ metro_lines = [
 
 ]
 
-# Print the total distance of each metro line
-for line in metro_lines:
-    print(f"{line.name}: {line.total_distance():.2f} km")
+"""-------Print the total distance of each metro line-------"""
+#for line in metro_lines:
+    #print(f"{line.name}: {line.total_distance():.2f} km")
 # Create a graph representation of the metro network
 G = nx.Graph()
 for connection in connections:
@@ -95,9 +102,16 @@ def calculate_travel_time(distance, average_velocity, average_stopping_time, num
     total_stopping_time = number_of_stops * average_stopping_time
     return travel_time + total_stopping_time
 
-# Example parameters
-average_velocity = 60  # km/h
-average_stopping_time = 1/60  # minutes
+
+
+
+"""-------Print the distances between stations next to eachother on a line-------"""
+#for connection in connections:
+    #print(f"{connection.station1.name} to {connection.station2.name}: {connection.distance:.2f} km")
+
+
+
+
 
 # Create a DataFrame to store travel times
 travel_times = pd.DataFrame(index=[station.name for station in stations], columns=[station.name for station in stations])
@@ -116,7 +130,7 @@ for station1 in stations:
             travel_times.at[station1.name, station2.name] = 0  # Travel time to the same station is 0
 
 # Print the travel times table
-print("Travel times (minutes):")
+#print("Travel times (minutes):")
 #print(travel_times)
 
 
@@ -129,8 +143,8 @@ port_stations = ["Maasvlakte", "Europort West", "Europort East", "Botlek", "Vond
 filtered_travel_times = travel_times.loc[selected_stations, port_stations]
 
 # Print the filtered travel times table
-print("Filtered Travel times (minutes) from selected stations to port stations:")
-print(filtered_travel_times)
+#print("Filtered Travel times (minutes) from selected stations to port stations:")
+#print(filtered_travel_times)
 
 
 # Create a DataFrame to store distances
@@ -148,7 +162,7 @@ for station1 in stations:
         else:
             distances.at[station1.name, station2.name] = 0  # Distance to the same station is 0
 # Print the distances table
-print("\nDistances (km):")
+#print("\nDistances (km):")
 
 
 
@@ -157,7 +171,7 @@ filtered_distances = distances.loc[selected_stations, port_stations]
 
 # Print the filtered travel times table
 
-print(filtered_distances)
+#print(filtered_distances)
 #print(distances)
 # Extract latitude and longitude from stations
 latitudes = [station.latitude for station in stations]
@@ -186,4 +200,4 @@ plt.legend()
 
 # Show plot
 plt.grid(True)
-plt.show()
+#plt.show()
