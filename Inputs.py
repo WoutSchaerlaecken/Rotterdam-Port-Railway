@@ -5,6 +5,10 @@ from metro_classes import Station, Connection, find_station_by_name, MetroLine
 
 
 
+#Define average speed and stopping time
+average_velocity = 70  # km/h
+average_stopping_time = 1/60  # minutes
+
 
 # Create stations with their names and coordinates
 stations = [

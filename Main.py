@@ -1,0 +1,105 @@
+import networkx as nx
+from geopy.distance import geodesic
+import pandas as pd
+import matplotlib.pyplot as plt
+
+from Inputs import stations, connections, metro_lines, average_velocity, average_stopping_time
+from functions import calculate_travel_time
+
+G = nx.Graph()
+for connection in connections:
+    G.add_edge(connection.station1.name, connection.station2.name, weight=connection.distance)
+
+"""-------Print the distances between stations next to eachother on a line-------"""
+#for connection in connections:
+    #print(f"{connection.station1.name} to {connection.station2.name}: {connection.distance:.2f} km")
+
+
+# Create a DataFrame to store travel times
+travel_times = pd.DataFrame(index=[station.name for station in stations], columns=[station.name for station in stations])
+
+# Calculate travel times between each pair of stations
+for station1 in stations:
+    for station2 in stations:
+        if station1 != station2:
+            # Find the shortest path between the stations
+            path = nx.shortest_path(G, source=station1.name, target=station2.name, weight='weight')
+            number_of_stops = len(path) - 2 
+            distance = sum(G[path[i]][path[i+1]]['weight'] for i in range(len(path) - 1))
+            travel_time = round((calculate_travel_time(distance, average_velocity, average_stopping_time, number_of_stops)) * 60, 2)
+            travel_times.at[station1.name, station2.name] = travel_time
+        else:
+            travel_times.at[station1.name, station2.name] = 0  # Travel time to the same station is 0
+
+# Print the travel times table
+#print("Travel times (minutes):")
+#print(travel_times)
+
+
+
+# Filter the stations for the specific ones
+selected_stations = ["Central Station", "Schiedam Centrum", "The Hague Central", "Naaldwijk"]
+port_stations = ["Maasvlakte", "Europort West", "Europort East", "Botlek", "Vonderlingenplaat", "Waalhaven"]
+
+# Create a DataFrame to store travel times for the selected stations to port stations
+filtered_travel_times = travel_times.loc[selected_stations, port_stations]
+
+# Print the filtered travel times table
+#print("Filtered Travel times (minutes) from selected stations to port stations:")
+#print(filtered_travel_times)
+
+
+# Create a DataFrame to store distances
+distances = pd.DataFrame(index=[station.name for station in stations], columns=[station.name for station in stations])
+
+
+# Calculate distances between each pair of stations using the metro lines
+for station1 in stations:
+    for station2 in stations:
+        if station1 != station2:
+            # Find the shortest path between the stations using the metro lines
+            path = nx.shortest_path(G, source=station1.name, target=station2.name, weight='weight')
+            distance = sum(G[path[i]][path[i+1]]['weight'] for i in range(len(path) - 1))
+            distances.at[station1.name, station2.name] = round(distance, 2)
+        else:
+            distances.at[station1.name, station2.name] = 0  # Distance to the same station is 0
+# Print the distances table
+#print("\nDistances (km):")
+
+
+
+
+filtered_distances = distances.loc[selected_stations, port_stations]
+
+# Print the filtered travel times table
+
+#print(filtered_distances)
+#print(distances)
+# Extract latitude and longitude from stations
+latitudes = [station.latitude for station in stations]
+longitudes = [station.longitude for station in stations]
+names = [station.name for station in stations]
+
+# Create a scatter plot
+plt.figure(figsize=(10, 8))
+plt.scatter(longitudes, latitudes, marker='o', color='b')
+
+# Annotate each station
+for i, name in enumerate(names):
+    plt.annotate(name, (longitudes[i], latitudes[i]), textcoords="offset points", xytext=(0, 10), ha='center')
+
+# Plot metro lines
+for line in metro_lines:
+    line_latitudes = [connection.station1.latitude for connection in line.connections] + [line.connections[-1].station2.latitude]
+    line_longitudes = [connection.station1.longitude for connection in line.connections] + [line.connections[-1].station2.longitude]
+    plt.plot(line_longitudes, line_latitudes, marker='o', label=line.name)
+
+# Set labels and title
+plt.xlabel('Longitude')
+plt.ylabel('Latitude')
+plt.title('Station Locations and Metro Lines')
+plt.legend()
+
+# Show plot
+plt.grid(True)
+#plt.show()
