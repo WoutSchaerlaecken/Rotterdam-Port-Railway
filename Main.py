@@ -53,7 +53,7 @@ for station1 in stations:
         else:
             distances.at[station1.name, station2.name] = 0  # Distance to the same station is 0
 
-filtered_distances = distances.loc[selected_stations, port_stations]
+filtered_distances = distances.loc[start_stations, end_stations]
 
 # Print the filtered travel times table
 
