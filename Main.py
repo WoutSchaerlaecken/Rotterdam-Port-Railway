@@ -35,6 +35,15 @@ for station1 in stations:
 filtered_travel_times = travel_times.loc[start_stations, end_stations]
 filtered_distances = distances.loc[start_stations, end_stations]
 
+output_filename = f'Output_Files/Configuration_{Configuration}_filtered_travel_times_and_distances.txt'
+with open(output_filename, 'w') as f:
+    f.write(f"Configuration {Configuration}:\n")
+    f.write("\n")
+    f.write("Filtered Travel Times (minutes) from selected stations to port stations:\n")
+    f.write(filtered_travel_times.to_string())
+    f.write("\n\nFiltered Distances (km) from selected stations to port stations:\n")
+    f.write(filtered_distances.to_string())
+
 #print("Filtered Travel times (minutes) from selected stations to port stations:")
 print(filtered_travel_times)
 
@@ -72,4 +81,4 @@ plt.grid(True)
 
 
 # Save the plot to the Output Files folder
-plt.savefig('Output_Files/station_locations_and_metro_lines.png')
+plt.savefig(f'Output_Files/Configuration_{Configuration}_station_locations_and_metro_lines.png')
