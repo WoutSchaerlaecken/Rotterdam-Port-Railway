@@ -25,12 +25,6 @@ class Connection:
     def __repr__(self):
         return f"Connection({self.station1.name} - {self.station2.name}, distance={self.distance:.2f} km)"
 
-def find_station_by_name(name, stations):
-    for station in stations:
-        if station.name == name:
-            return station
-    raise ValueError(f"Station with name {name} not found")
-
 class MetroLine:
     def __init__(self, name, connections):
         self.name = name

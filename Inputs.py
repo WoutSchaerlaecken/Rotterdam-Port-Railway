@@ -1,7 +1,8 @@
 """---This file will be used to input the stations, their locations, the lines---""" 
 """--------and other information required to simulate the metro system.----------"""
 
-from metro_classes import Station, Connection, find_station_by_name, MetroLine
+from metro_classes import Station, Connection, MetroLine
+from functions import find_station_by_name
 
 Configuration = 1
 

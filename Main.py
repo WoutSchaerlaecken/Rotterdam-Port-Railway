@@ -6,8 +6,7 @@ import matplotlib.pyplot as plt
 from Inputs import stations, connections, metro_lines, average_velocity, average_stopping_time, start_stations, end_stations, average_waiting_time, Configuration
 from functions import calculate_travel_time_with_waiting, G, get_number_of_switches
 
-"""-------Print the distances between stations next to eachother on a line-------"""
-
+# Print distance between each pair of stations
 #for connection in connections:
     #print(f"{connection.station1.name} to {connection.station2.name}: {connection.distance:.2f} km")
 
@@ -35,6 +34,7 @@ for station1 in stations:
 filtered_travel_times = travel_times.loc[start_stations, end_stations]
 filtered_distances = distances.loc[start_stations, end_stations]
 
+#store data in a text file
 output_filename = f'Output_Files/Configuration_{Configuration}_filtered_travel_times_and_distances.txt'
 with open(output_filename, 'w') as f:
     f.write(f"Configuration {Configuration}:\n")
@@ -44,12 +44,13 @@ with open(output_filename, 'w') as f:
     f.write("\n\nFiltered Distances (km) from selected stations to port stations:\n")
     f.write(filtered_distances.to_string())
 
+#Print the travel distances and times
 #print("Filtered Travel times (minutes) from selected stations to port stations:")
 print(filtered_travel_times)
-
-
 print(filtered_distances)
 #print(distances)
+
+
 # Extract latitude and longitude from stations
 latitudes = [station.latitude for station in stations]
 longitudes = [station.longitude for station in stations]
@@ -77,8 +78,15 @@ plt.legend()
 
 # Show plot
 plt.grid(True)
+plt.savefig(f'Output_Files/Configuration_{Configuration}_station_locations_and_metro_lines.png')
 #plt.show()
+# Load the background image
+bg_image = plt.imread('Map2.png')
 
+# Plot the background image
+plt.imshow(bg_image, extent=[min(longitudes) - 0.02, max(longitudes) + 0.04, min(latitudes) - 0.08, max(latitudes) +0.05], aspect='auto')
+
+# Show plot
+plt.show()
 
 # Save the plot to the Output Files folder
-plt.savefig(f'Output_Files/Configuration_{Configuration}_station_locations_and_metro_lines.png')

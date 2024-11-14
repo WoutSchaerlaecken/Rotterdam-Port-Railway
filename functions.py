@@ -56,6 +56,3 @@ def get_number_of_switches(station1_name, station2_name):
         return 1
     else:
         return 0
-    
-
-
