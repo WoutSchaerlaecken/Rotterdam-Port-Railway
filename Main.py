@@ -3,7 +3,7 @@ from geopy.distance import geodesic
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from Inputs import stations, connections, metro_lines, average_velocity, average_stopping_time, start_stations, end_stations, average_waiting_time
+from Inputs import stations, connections, metro_lines, average_velocity, average_stopping_time, start_stations, end_stations, average_waiting_time, Configuration
 from functions import calculate_travel_time_with_waiting, G, get_number_of_switches
 
 """-------Print the distances between stations next to eachother on a line-------"""
@@ -63,7 +63,7 @@ for line in metro_lines:
 # Set labels and title
 plt.xlabel('Longitude')
 plt.ylabel('Latitude')
-plt.title('Station Locations and Metro Lines')
+plt.title('Configuration',Configuration,': Station Locations and Metro Lines')
 plt.legend()
 
 # Show plot
