@@ -63,9 +63,13 @@ for line in metro_lines:
 # Set labels and title
 plt.xlabel('Longitude')
 plt.ylabel('Latitude')
-plt.title('Configuration',Configuration,': Station Locations and Metro Lines')
+plt.title(f'Configuration {Configuration}: Station Locations and Metro Lines')
 plt.legend()
 
 # Show plot
 plt.grid(True)
-plt.show()
+#plt.show()
+
+
+# Save the plot to the Output Files folder
+plt.savefig('Output_Files/station_locations_and_metro_lines.png')
