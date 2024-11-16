@@ -2,7 +2,7 @@
 """--------and other information required to simulate the metro system.----------"""
 
 from metro_classes import Station, Connection, MetroLine
-from functions import find_station_by_name
+
 
 Configuration = 2
 
@@ -31,6 +31,13 @@ stations = [
     Station("Waalhaven", 51.888, 4.423)
 ]
 
+
+def find_station_by_name(name, stations):
+    for station in stations:
+        if station.name == name:
+            return station
+    raise ValueError(f"Station with name {name} not found")
+
 # Create connections between stations
 connections = [
     Connection(find_station_by_name("Central Station", stations), find_station_by_name("Schiedam Centrum", stations)),
@@ -51,3 +58,4 @@ metro_lines = [
     #MetroLine("Line 2", [connections[2], connections[3], connections[4], connections[5], connections[6]]),
     #MetroLine("Line 3", [connections[7], connections[8]]),
 ]
+

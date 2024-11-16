@@ -2,7 +2,7 @@
 
 
 import networkx as nx
-from Inputs import connections, metro_lines, stations
+from Inputs import connections, metro_lines, stations, find_station_by_name
 
 #Calculate the travel time between two stations
 def calculate_travel_time(distance, average_velocity, average_stopping_time, number_of_stops):
@@ -25,11 +25,7 @@ for connection in connections:
 
 
 # Find the station object by its name
-def find_station_by_name(name, stations):
-    for station in stations:
-        if station.name == name:
-            return station
-    raise ValueError(f"Station with name {name} not found")
+
 
 # Find the number of line changes between two stations
 def get_number_of_switches(station1_name, station2_name):
