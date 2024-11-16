@@ -42,11 +42,12 @@ connections = [
     Connection(find_station_by_name("Europort West", stations), find_station_by_name("Maasvlakte", stations)),
     Connection(find_station_by_name("Maasvlakte", stations), find_station_by_name("Naaldwijk", stations)),
     Connection(find_station_by_name("Naaldwijk", stations), find_station_by_name("The Hague Central", stations)),
+    Connection(find_station_by_name("The Hague Central", stations), find_station_by_name("Central Station", stations))
 ]
 
 # Define metro lines 
 metro_lines = [
-    MetroLine("Line 1", [connections[0], connections[1], connections[2], connections[3], connections[4], connections[5], connections[6], connections[7], connections[8]]),
+    MetroLine("Line 1", [connections[0], connections[1], connections[2], connections[3], connections[4], connections[5], connections[6], connections[7], connections[8], connections[9]])
     #MetroLine("Line 2", [connections[2], connections[3], connections[4], connections[5], connections[6]]),
     #MetroLine("Line 3", [connections[7], connections[8]]),
 ]
