@@ -4,7 +4,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 from Inputs import stations, connections, metro_lines, average_velocity, average_stopping_time, start_stations, end_stations, average_waiting_time, Configuration
-from functions import calculate_travel_time_with_waiting, G, get_number_of_switches
+from functions import calculate_travel_time_with_waiting, get_number_of_switches, G
+
+
 
 # Print distance between each pair of stations
 #for connection in connections:
@@ -15,6 +17,8 @@ travel_times = pd.DataFrame(index=[station.name for station in stations], column
 distances = pd.DataFrame(index=[station.name for station in stations], columns=[station.name for station in stations])
 
 # Calculate travel times between each pair of stations
+
+
 for station1 in stations:
     for station2 in stations:
         if station1 != station2:
@@ -34,22 +38,31 @@ for station1 in stations:
 filtered_travel_times = travel_times.loc[start_stations, end_stations]
 filtered_distances = distances.loc[start_stations, end_stations]
 
+average_travel_time = filtered_travel_times.mean().mean()
+max_travel_time = filtered_travel_times.max().max()
+
 #store data in a text file
 output_filename = f'Output_Files/Configuration_{Configuration}_filtered_travel_times_and_distances.txt'
 with open(output_filename, 'w') as f:
     f.write(f"Configuration {Configuration}:\n")
+    f.write("\nFiltered Distances (km) from selected stations to port stations:\n")
     f.write("\n")
-    f.write("Filtered Travel Times (minutes) from selected stations to port stations:\n")
-    f.write(filtered_travel_times.to_string())
-    f.write("\n\nFiltered Distances (km) from selected stations to port stations:\n")
     f.write(filtered_distances.to_string())
+    f.write("\n")
+    f.write("\nFiltered Travel Times (minutes) from selected stations to port stations:\n")
+    f.write("\n")
+    f.write(filtered_travel_times.to_string())
+    f.write("\n")
+    f.write(f"\nAverage travel time from selected stations to port stations: {average_travel_time:.2f} minutes")
+    f.write(f"\nMaximum travel time from selected stations to port stations: {max_travel_time:.2f} minutes")
 
 #Print the travel distances and times
 #print("Filtered Travel times (minutes) from selected stations to port stations:")
 print(filtered_travel_times)
 print(filtered_distances)
+print(f"Maximum travel time from selected stations to port stations: {max_travel_time:.2f} minutes")
+print(f"\nAverage travel time from selected stations to port stations: {average_travel_time:.2f} minutes")
 #print(distances)
-
 
 # Extract latitude and longitude from stations
 latitudes = [station.latitude for station in stations]

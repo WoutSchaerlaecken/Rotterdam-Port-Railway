@@ -142,6 +142,12 @@ filtered_travel_times = travel_times.loc[selected_stations, port_stations]
 # Print the filtered travel times table
 print("Filtered Travel times (minutes) from selected stations to port stations:")
 print(filtered_travel_times)
+# Calculate and print the average travel time for the filtered travel times
+average_travel_time = filtered_travel_times.mean().mean()
+print(f"\nAverage travel time from selected stations to port stations: {average_travel_time:.2f} minutes")
+# Calculate and print the maximum travel time for the filtered travel times
+max_travel_time = filtered_travel_times.max().max()
+print(f"Maximum travel time from selected stations to port stations: {max_travel_time:.2f} minutes")
 
 # Create a DataFrame to store distances
 distances = pd.DataFrame(index=[station.name for station in stations], columns=[station.name for station in stations])

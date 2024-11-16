@@ -20,7 +20,12 @@ def calculate_travel_time_with_waiting(distance, average_velocity, average_stopp
 
 # Create a graph to represent the metro system
 G = nx.Graph()
-for connection in connections:
+used_connections = set()
+for line in metro_lines:
+    for connection in line.connections:
+        used_connections.add(connection)
+
+for connection in used_connections:
     G.add_edge(connection.station1.name, connection.station2.name, weight=connection.distance)
 
 
