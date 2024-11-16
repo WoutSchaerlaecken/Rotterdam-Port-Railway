@@ -81,10 +81,10 @@ plt.grid(True)
 plt.savefig(f'Output_Files/Configuration_{Configuration}_station_locations_and_metro_lines.png')
 #plt.show()
 # Load the background image
-bg_image = plt.imread('Map2.png')
+#bg_image = plt.imread('Map2.png')
 
 # Plot the background image
-plt.imshow(bg_image, extent=[min(longitudes) - 0.02, max(longitudes) + 0.04, min(latitudes) - 0.08, max(latitudes) +0.05], aspect='auto')
+#plt.imshow(bg_image, extent=[min(longitudes) - 0.02, max(longitudes) + 0.04, min(latitudes) - 0.08, max(latitudes) +0.05], aspect='auto')
 
 # Show plot
 plt.show()
