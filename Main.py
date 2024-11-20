@@ -7,7 +7,6 @@ from Inputs import stations, connections, metro_lines, average_velocity, average
 from functions import calculate_travel_time_with_waiting, get_number_of_switches, G
 
 
-
 # Print distance between each pair of stations
 #for connection in connections:
     #print(f"{connection.station1.name} to {connection.station2.name}: {connection.distance:.2f} km")
@@ -101,5 +100,3 @@ plt.savefig(f'Output_Files/Configuration_{Configuration}_station_locations_and_m
 
 # Show plot
 plt.show()
-
-# Save the plot to the Output Files folder

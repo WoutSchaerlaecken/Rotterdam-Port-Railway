@@ -1,15 +1,20 @@
 Configuration 1:
 
-Filtered Travel Times (minutes) from selected stations to port stations:
-                  Maasvlakte Europort West Europort East Botlek Vonderlingenplaat Waalhaven
-Central Station        42.88         35.21         28.17  14.39              24.9     30.65
-Schiedam Centrum       37.95         30.27         23.24   9.45             19.96     25.71
-The Hague Central      41.74         34.07         22.03  35.82             41.33     47.08
-Naaldwijk              28.67          21.0          8.96  22.75             28.26     34.01
-
 Filtered Distances (km) from selected stations to port stations:
+
                   Maasvlakte Europort West Europort East Botlek Vonderlingenplaat Waalhaven
-Central Station        33.88         27.21         21.17  13.39              17.9     22.65
-Schiedam Centrum       29.95         23.27         17.24   9.45             13.96     18.71
-The Hague Central      33.74         27.07         21.03  28.82             33.33     38.08
-Naaldwijk              21.67          15.0          8.96  16.75             21.26     26.01
+Central Station        37.56         30.89         24.85  17.07             12.56      7.81
+Schiedam Centrum       33.63         26.95         20.92  13.13              8.62      3.87
+The Hague Central      25.92          32.6         38.64  36.95             32.44     27.69
+Naaldwijk              13.85         20.53         26.57  34.35             38.86     39.76
+
+Filtered Travel Times (minutes) from selected stations to port stations:
+
+                  Maasvlakte Europort West Europort East Botlek Vonderlingenplaat Waalhaven
+Central Station        43.56         35.89         28.85  20.07             14.56      8.81
+Schiedam Centrum       38.63         30.95         23.92  15.13              9.62      3.87
+The Hague Central      26.92          34.6         41.64  40.95             35.44     29.69
+Naaldwijk              13.85         21.53         28.57  37.35             42.86     42.76
+
+Average travel time from selected stations to port stations: 27.92 minutes
+Maximum travel time from selected stations to port stations: 43.56 minutes

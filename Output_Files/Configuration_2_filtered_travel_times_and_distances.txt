@@ -5,16 +5,16 @@ Filtered Distances (km) from selected stations to port stations:
                   Maasvlakte Europort West Europort East Botlek Vonderlingenplaat Waalhaven
 Central Station        37.56         30.89         24.85  17.07             12.56      7.81
 Schiedam Centrum       33.63         26.95         20.92  13.13              8.62      3.87
-The Hague Central      25.92          32.6         38.64  36.95             32.44     27.69
-Naaldwijk              13.85         20.53         26.57  34.35             38.86     39.76
+The Hague Central      25.92          32.6         38.64  46.42             50.93     55.68
+Naaldwijk              13.85         20.53         26.57  34.35             38.86     43.61
 
 Filtered Travel Times (minutes) from selected stations to port stations:
 
                   Maasvlakte Europort West Europort East Botlek Vonderlingenplaat Waalhaven
-Central Station        43.56         35.89         28.85  20.07             14.56      8.81
-Schiedam Centrum       38.63         30.95         23.92  15.13              9.62      3.87
-The Hague Central      26.92          34.6         41.64  40.95             35.44     29.69
-Naaldwijk              13.85         21.53         28.57  37.35             42.86     42.76
+Central Station        48.56         40.89         33.85  25.07             19.56      8.81
+Schiedam Centrum       43.63         35.95         28.92  20.13             14.62      3.87
+The Hague Central      26.92          34.6         41.64  50.42             55.93     61.68
+Naaldwijk              13.85         21.53         28.57  37.35             42.86     48.61
 
-Average travel time from selected stations to port stations: 27.92 minutes
-Maximum travel time from selected stations to port stations: 43.56 minutes
+Average travel time from selected stations to port stations: 32.83 minutes
+Maximum travel time from selected stations to port stations: 61.68 minutes
