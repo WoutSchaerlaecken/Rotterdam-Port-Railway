@@ -90,8 +90,9 @@ plt.legend()
 
 # Show plot
 plt.grid(True)
+plt.axis('equal')
 plt.savefig(f'Output_Files/Configuration_{Configuration}_station_locations_and_metro_lines.png')
-#plt.show()
+
 # Load the background image
 #bg_image = plt.imread('Map2.png')
 

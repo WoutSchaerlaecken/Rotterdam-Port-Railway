@@ -190,6 +190,7 @@ plt.xlabel('Longitude')
 plt.ylabel('Latitude')
 plt.title('Station Locations and Metro Lines')
 plt.legend()
+plt.axis('equal')
 
 # Show plot
 plt.grid(True)

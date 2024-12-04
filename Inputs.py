@@ -4,7 +4,7 @@
 from metro_classes import Station, Connection, MetroLine
 
 
-Configuration = 7
+Configuration = 3
 #Define average speed and stopping time
 average_velocity =  60 # km/h
 average_stopping_time = 1/60  # minutes
@@ -46,7 +46,7 @@ connections = [
     Connection(find_station_by_name("Botlek", stations), find_station_by_name("Europort East", stations)),
     Connection(find_station_by_name("Europort East", stations), find_station_by_name("Europort West", stations)),
     Connection(find_station_by_name("Europort West", stations), find_station_by_name("Maasvlakte", stations)),
-    Connection(find_station_by_name("Europort West", stations), find_station_by_name("Naaldwijk", stations)),
+    Connection(find_station_by_name("Europort East", stations), find_station_by_name("Naaldwijk", stations)),
     Connection(find_station_by_name("Naaldwijk", stations), find_station_by_name("The Hague Central", stations)),
     Connection(find_station_by_name("The Hague Central", stations), find_station_by_name("Central Station", stations))
 
